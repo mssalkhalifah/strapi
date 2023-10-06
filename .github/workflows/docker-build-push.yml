@@ -30,18 +30,10 @@ jobs:
           while IFS= read -r line; do
             if [[ ! -z "$line" && "$line" != \#* ]]; then
               variable=$(echo "$line" | cut -d '=' -f 1)
-              # Use GitHub Secret for sensitive values
-              secret_name="${variable^^}"  # Convert to uppercase as GitHub Secrets are case-sensitive
-              secret_value="${{ secrets["$secret_name"] }}"
-
-              # Check if the secret value is present
-              if [ -z "$secret_value" ]; then
-                echo "Error: Secret not found for $variable."
-                exit 1
-              fi
-
-              echo "$variable=$secret_value" >> .env
-              else
+              secret_name="${variable^^}"
+              # Set the secret directly in the script
+              echo "::set-env name=$variable::${{ secrets[$secret_name] }}"
+            else
               echo "$line" >> .env
             fi
           done < .env.example
