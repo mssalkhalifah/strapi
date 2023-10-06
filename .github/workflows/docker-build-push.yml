@@ -48,6 +48,8 @@ jobs:
           echo DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} >> .env
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
           echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo API_TOKEN_SALT=${{ secrets.API_TOKEN_SALT }} >> .env
+          echo TRANSFER_TOKEN_SALT=${{ secrets.TRANSFER_TOKEN_SALT }} >> .env
           
       - name: Copy .env file to remote server
         uses: appleboy/scp-action@v0.1.3
