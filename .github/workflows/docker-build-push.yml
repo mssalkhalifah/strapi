@@ -1,0 +1,77 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Generate and Populate .env file
+        run: |
+          #!/bin/bash
+
+          if [ ! -f .env.example ]; then
+            echo "Error: .env.example file not found."
+            exit 1
+          fi
+
+          echo "Generating .env file..."
+
+          while IFS= read -r line; do
+            if [[ ! -z "$line" && "$line" != \#* ]]; then
+              variable=$(echo "$line" | cut -d '=' -f 1)
+              # Use GitHub Secret for sensitive values
+              secret_name="${variable^^}"  # Convert to uppercase as GitHub Secrets are case-sensitive
+              secret_value="${{ secrets[$secret_name] }}"
+
+              # Check if the secret value is present
+              if [ -z "$secret_value" ]; then
+                echo "Error: Secret not found for $variable."
+                exit 1
+              fi
+
+              echo "$variable=$secret_value" >> .env
+              else
+              echo "$line" >> .env
+            fi
+          done < .env.example
+
+          echo ".env file generated successfully."
+        shell: bash
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker buildx create --use
+          docker buildx inspect
+          docker buildx build --platform linux/amd64,linux/arm64 -t your-docker-username/your-image-name:latest -t your-docker-username/your-image-name:${{ github.sha }} .
+          docker push your-docker-username/your-image-name:latest
+          docker push your-docker-username/your-image-name:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Copy .env file to remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_SERVER_HOST }}
+          username: ${{ secrets.REMOTE_SERVER_USERNAME }}
+          key: ${{ secrets.REMOTE_SERVER_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SERVER_SSH_PORT }}
+          script: |
+            scp .env ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_HOST }}:/path/to/remote/directory/

@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_tag_stacks",
+  "info": {
+    "displayName": "Stack",
+    "icon": "stack",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 10
+    },
+    "color": {
+      "type": "enumeration",
+      "enum": [
+        "yellow",
+        "blue",
+        "green",
+        "black",
+        "white",
+        "red"
+      ],
+      "required": true,
+      "default": "white"
+    },
+    "source": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
