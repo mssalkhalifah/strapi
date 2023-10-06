@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: Generate and Populate .env file
         run: |
-          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} > .env
+          touch .env
+          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} >> .env
           echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
           echo DATABASE_CLIENT=${{ secrets.DATABASE_CLIENT }} >> .env
           echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> .env
@@ -50,11 +51,11 @@ jobs:
           echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
           
       - name: Copy .env file to remote server
-        uses: appleboy/ssh-action@master
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.REMOTE_SERVER_HOST }}
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.REMOTE_SERVER_SSH_KEY }}
           port: ${{ secrets.REMOTE_SERVER_SSH_PORT }}
-          script: |
-            scp .env ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_HOST }}:/path/to/remote/directory/
+          source: "./.env"
+          target: "$HOME/Apps/strapi/"
