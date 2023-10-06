@@ -32,7 +32,7 @@ jobs:
               variable=$(echo "$line" | cut -d '=' -f 1)
               # Use GitHub Secret for sensitive values
               secret_name="${variable^^}"  # Convert to uppercase as GitHub Secrets are case-sensitive
-              secret_value="${{ secrets['$secret_name'] }}"
+              secret_value=${{ secrets["$secret_name"] }}
 
               # Check if the secret value is present
               if [ -z "$secret_value" ]; then
