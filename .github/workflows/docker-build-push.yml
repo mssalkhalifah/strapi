@@ -27,9 +27,8 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx inspect
-          docker buildx build --platform linux/amd64,linux/arm64 -t mssalkhalifah/strapi:latest -t mssalkhalifah/strapi:${{ github.sha }} -f Dockerfile.prod .
+          docker buildx build --platform linux/amd64,linux/arm64 -t mssalkhalifah/strapi:latest -f Dockerfile.prod .
           docker push mssalkhalifah/strapi:latest
-          docker push mssalkhalifah/strapi:${{ github.sha }}
 
   deploy:
     environment: production 
