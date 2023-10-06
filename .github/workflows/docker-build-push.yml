@@ -38,8 +38,7 @@ jobs:
     steps:
       - name: Generate and Populate .env file
         run: |
-          touch .env
-          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} >> .env
+          echo ADMIN_JWT_SECRET="${{ secrets.ADMIN_JWT_SECRET }}" > .env
           echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
           echo DATABASE_CLIENT=${{ secrets.DATABASE_CLIENT }} >> .env
           echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> .env
