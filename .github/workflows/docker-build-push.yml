@@ -18,28 +18,16 @@ jobs:
 
       - name: Generate and Populate .env file
         run: |
-          #!/bin/bash
-
-          if [ ! -f .env.example ]; then
-            echo "Error: .env.example file not found."
-            exit 1
-          fi
-
-          echo "Generating .env file..."
-
-          while IFS= read -r line; do
-            if [[ ! -z "$line" && "$line" != \#* ]]; then
-              variable=$(echo "$line" | cut -d '=' -f 1)
-              secret_name="${variable^^}"
-              # Set the secret directly in the script
-              echo "::set-env name=$variable::${{ secrets[$secret_name] }}"
-            else
-              echo "$line" >> .env
-            fi
-          done < .env.example
-
-          echo ".env file generated successfully."
-        shell: bash
+          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} > .env
+          echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
+          echo DATABASE_CLIENT=${{ secrets.DATABASE_CLIENT }} >> .env
+          echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> .env
+          echo DATABASE_NAME=${{ secrets.DATABASE_NAME }} >> .env
+          echo DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} >> .env
+          echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> .env
+          echo DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
 
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -48,9 +36,9 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx inspect
-          docker buildx build --platform linux/amd64,linux/arm64 -t your-docker-username/your-image-name:latest -t your-docker-username/your-image-name:${{ github.sha }} .
-          docker push your-docker-username/your-image-name:latest
-          docker push your-docker-username/your-image-name:${{ github.sha }}
+          docker buildx build --platform linux/amd64,linux/arm64 -t mssalkhalifah/strapi:latest -t mssalkhalifah/strapi:${{ github.sha }} -f Dockerfile.prod .
+          docker push mssalkhalifah/strapi:latest
+          docker push mssalkhalifah/strapi:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
