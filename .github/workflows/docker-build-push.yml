@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Generate and Populate .env file
         run: |
-          echo ADMIN_JWT_SECRET="${{ secrets.ADMIN_JWT_SECRET }}" > .env
+          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} > .env
           echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
           echo DATABASE_CLIENT=${{ secrets.DATABASE_CLIENT }} >> .env
           echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> .env
@@ -56,5 +56,5 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.REMOTE_SERVER_SSH_KEY }}
           port: ${{ secrets.REMOTE_SERVER_SSH_PORT }}
-          source: "./.env"
-          target: "$HOME/Apps/strapi/"
+          source: ".env"
+          target: "~/Apps/strapi"
