@@ -29,7 +29,9 @@
         "yellow",
         "blue",
         "white",
-        "black"
+        "black",
+        "green",
+        "purple"
       ],
       "default": "white",
       "required": true
