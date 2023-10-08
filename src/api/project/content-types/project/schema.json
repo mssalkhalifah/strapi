@@ -29,12 +29,6 @@
     "content": {
       "type": "richtext"
     },
-    "stacks": {
-      "type": "component",
-      "repeatable": true,
-      "component": "tag.stack",
-      "required": false
-    },
     "postImage": {
       "type": "media",
       "multiple": false,
@@ -48,13 +42,17 @@
       "type": "date",
       "required": true
     },
-    "enddate": {
-      "type": "date",
-      "required": false
-    },
     "shortDescription": {
       "type": "string",
       "required": true
+    },
+    "enddate": {
+      "type": "date"
+    },
+    "stacks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stack.stack"
     }
   }
 }

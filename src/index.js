@@ -72,7 +72,6 @@ module.exports = {
       stacks = stacks.filter((stack) => stack.uuid !== element.uuid);
     }
 
-    console.log("Fetched stacks\n", fetchedStacks);
     console.log("New stacks\n", stacks);
 
     for (const stack of stacks) {
