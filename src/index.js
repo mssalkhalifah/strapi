@@ -56,7 +56,7 @@ module.exports = {
         title: "PostgreSQL",
         uuid: "8acf84c2-af2a-4dda-b848-4abce7174ab8",
         color: "#336791",
-        url: "https://dotnet.microsoft.com/en-us/",
+        url: "https://www.postgresql.org/",
       },
     ];
 
