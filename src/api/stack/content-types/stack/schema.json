@@ -22,19 +22,15 @@
       "required": true,
       "maxLength": 36
     },
+    "url": {
+      "type": "string",
+      "required": false
+    },
     "color": {
-      "type": "enumeration",
-      "enum": [
-        "red",
-        "yellow",
-        "blue",
-        "white",
-        "black",
-        "green",
-        "purple"
-      ],
-      "default": "white",
-      "required": true
+      "type": "string",
+      "required": true,
+      "default": "#ffffff",
+      "regex": "^#(?:[0-9a-fA-F]{3}){1,2}$"
     }
   }
 }
