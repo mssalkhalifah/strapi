@@ -72,7 +72,4 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.REMOTE_SERVER_SSH_KEY }}
           port: ${{ secrets.REMOTE_SERVER_SSH_PORT }}
-          script: |
-            cd Apps
-            docker compose pull strapi
-            docker compose up
+          script: update-containers.sh strapi
