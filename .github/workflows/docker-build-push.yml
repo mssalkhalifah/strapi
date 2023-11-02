@@ -33,7 +33,7 @@ jobs:
           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
           echo AWS_BUCKET=${{ secrets.AWS_BUCKET }} >> .env
           echo AWS_ACL=${{ secrets.AWS_ACL }} >> .env
-          echo CDN_URL=${{ env.CDN_URL }} >> .env
+          echo CDN_URL=${{ github.CDN_URL }} >> .env
 
       - name: Copy .env file to remote server
         uses: appleboy/scp-action@v0.1.3
